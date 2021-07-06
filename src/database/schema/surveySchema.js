@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const answer_schema = new Schema(
     {
-       answer:{
+      answer:{
            type: String
        } 
     },{
@@ -51,8 +51,12 @@ const category_schema = new Schema(
   );
   const survey_schema = new Schema(
   {
-      userId:{type:Schema.Types.ObjectId, ref:'User'},
-      surveyTitle:{type:String},
+      userId:{
+        type:String
+      },
+      surveyTitle:{
+        type:String
+      },
       categories:[category_schema],
       results:[[rs_schema]]
 
