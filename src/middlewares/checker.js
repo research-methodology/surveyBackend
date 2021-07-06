@@ -102,8 +102,8 @@ class checkers{
         } catch (err) {
         if (err.message === "jwt malformed"|| err.message === "jwt must be provided" || err.message === "invalid token" || err.message === "jwt expired") {
             return res
-            .status(400)
-            .json({ message: "You are using Incorrect or Expired Link!" });
+            .status(403)
+            .json({ error: "You are using Incorrect or Expired Link!" });
         }
         return res.status(500).json({ message: "Internal Error!" });
         }
