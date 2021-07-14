@@ -41,10 +41,8 @@ export const sendEmail= async (mailOptions)  => {
     await transporter.sendMail(Options, (error) => {
         if (error) {
             console.log("email sent fails",error)
-           // return false
         } else {
             console.log("Email sent successfull")
-          //  return true
         }
     })
 }
