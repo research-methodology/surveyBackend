@@ -1,8 +1,5 @@
-import { string } from "joi";
-
-const mongoose = require("../config/dbconfig");
+const mongoose = require("../config/dbConfig");
 const Schema = mongoose.Schema;
-
 const answer_schema = new Schema(
     {
       answer:{

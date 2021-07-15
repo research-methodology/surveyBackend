@@ -55,7 +55,7 @@ class UserControllers {
         } catch (error) {
             res.status(500).json({
               status: 500,
-              error: "Internal server error!",
+              message: "Internal server error!",
             });
         }
     
@@ -102,7 +102,7 @@ class UserControllers {
         })
       } catch (error) {
         console.log(error)
-        return res.status(500).json({error: 'Internal server error!'});
+        return res.status(500).json({message: 'Internal server error!'});
       }
     }
     static async logout(req, res) {
@@ -125,7 +125,7 @@ class UserControllers {
             
         } catch (error) {
            // console.log(error)
-            return res.status(500).json({error: 'Internal server error!'});
+            return res.status(500).json({message: 'Internal server error!'});
         }
     }
 }

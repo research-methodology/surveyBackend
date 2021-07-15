@@ -6,13 +6,13 @@ class checkers{
 
     static async isLoggedIn(req,res,next){
         const auth = req.header('Authorization');
-        if (!auth) return res.status(401).json({ Error: 'Unauthorized, Login first'});
+        if (!auth) return res.status(401).json({ message: 'Unauthorized, Login first'});
         const token = req.headers.authorization;        
         const id = decode(token).id;
         try{
             const frestUser= await User.findById(id);
             if(!frestUser.isLoggedIn) {
-                return res.status(401).json({ error: "User already logged out, Please Login and try again!" });
+                return res.status(401).json({ message: "User already logged out, Please Login and try again!" });
             }
             req.id = id;
             next();    
@@ -55,18 +55,23 @@ class checkers{
             
         } catch (error) {
             console.log(error)
+            return res.status(500).json({ message: "Internal Error!" });
         }
     }
 
     static async isVerified(req,res,next){
-        const {email} = req.body;
-        const user =await User.findOne({email});
-        if(!user.isConfirmed){
-            return res.status(402).send({
-                message:"Sir/Madam you have to check Our Email verification in your email",
-            });
+        try {
+            const {email} = req.body;
+            const user =await User.findOne({email});
+            if(!user.isConfirmed){
+                return res.status(402).send({
+                    message:"Sir/Madam you have to check Our Email verification in your email",
+                });
+            }
+            next();
+        } catch (error) {
+            return res.status(500).json({ message: "Internal Error!" }); 
         }
-        next();
     }
 
     static verifyValidLink(req, res, next) {
@@ -79,10 +84,10 @@ class checkers{
         console.log(err)
         if (err.message === "jwt malformed"|| err.message === "jwt must be provided" || err.message === "invalid token" || err.message === "jwt expired") {
             return res
-            .status(400)
-            .json({ error: "You are using Incorrect or Expired Link!" });
+            .status(401)
+            .json({ message: "You are using Incorrect or Expired Link!" });
         }
-        return res.status(500).json({ Error: "Internal Error!" });
+        return res.status(500).json({ message: "Internal Error!" });
         }
     }
 
@@ -90,7 +95,7 @@ class checkers{
     static verifyToken(req, res, next) {
         try {
             const auth = req.header('Authorization');
-            if (!auth) return res.status(401).json({ Error: 'Unauthorized, Login first'});
+            if (!auth) return res.status(401).json({ message: 'Unauthorized, Login first'});
             const token = req.headers.authorization; 
             const decodedToken = decode(token)
             return next();
@@ -98,9 +103,9 @@ class checkers{
         if (err.message === "jwt malformed"|| err.message === "jwt must be provided" || err.message === "invalid token" || err.message === "jwt expired") {
             return res
             .status(400)
-            .json({ error: "You are using Incorrect or Expired Link!" });
+            .json({ message: "You are using Incorrect or Expired Link!" });
         }
-        return res.status(500).json({ Error: "Internal Error!" });
+        return res.status(500).json({ message: "Internal Error!" });
         }
     }
        

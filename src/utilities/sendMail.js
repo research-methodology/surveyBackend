@@ -19,7 +19,7 @@ export const sendEmail= async (mailOptions)  => {
     let url =`https://cst-survey-frontend.herokuapp.com`
     let newUrl = url + mailOptions.url
     const Options = {
-        from: `Survey App <citeplusdev@gmail.com>`,
+        from: `Survey App ${process.env.EMAILNAME_AUTH}`,
         to: mailOptions.email,
         subject: "your are receiving this email because you signup on our system",
         html: `
@@ -41,10 +41,8 @@ export const sendEmail= async (mailOptions)  => {
     await transporter.sendMail(Options, (error) => {
         if (error) {
             console.log("email sent fails",error)
-           // return false
         } else {
             console.log("Email sent successfull")
-          //  return true
         }
     })
 }
