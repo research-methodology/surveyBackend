@@ -16,6 +16,8 @@ export const sendEmail= async (mailOptions)  => {
    
         }
     });
+    let url =`https://cst-survey-frontend.herokuapp.com`
+    let newUrl = url + mailOptions.url
     const Options = {
         from: `Survey App <citeplusdev@gmail.com>`,
         to: mailOptions.email,
@@ -29,7 +31,7 @@ export const sendEmail= async (mailOptions)  => {
                   <div >
                     <h2>hello Sir/Madam<h2><br>
                     <p>Thanks for registering on our site. Please click the link below to verify your account.</p>
-                    <p><a href="${mailOptions.url}" style="font-size:12px">${mailOptions.url}</a></p>
+                    <p><a href="${newUrl}" style="font-size:12px">${newUrl}</a></p>
                             <p>Please note that if you do not verify your email address within 3 days, the verification code above will expire and you will need to re-register again.</p>
                   </div>
                 </div>
@@ -39,10 +41,8 @@ export const sendEmail= async (mailOptions)  => {
     await transporter.sendMail(Options, (error) => {
         if (error) {
             console.log("email sent fails",error)
-           // return false
         } else {
             console.log("Email sent successfull")
-          //  return true
         }
     })
 }

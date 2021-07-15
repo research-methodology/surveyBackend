@@ -1,9 +1,7 @@
 import bcrypt, { hash } from "bcryptjs";
 import { signinToken, decode } from "../utilities/jwt";
 import { sendEmail } from "../utilities/sendMail";
-//import { User } from './../database/models/userShema'
 import { User } from "./../database/schema/user";
-//const User = require("./../database/schema/user")
 class UserControllers {
     static async signUp(req,res) {
         try{ 
@@ -15,7 +13,7 @@ class UserControllers {
                 password:cipher,
             });
             const emailVerificationToken = signinToken({ id: newUser._id, email: newUser.email})
-            const url=`${req.protocol}://${req.get("host")}/verification/${emailVerificationToken}`
+            const url=`/verification/${emailVerificationToken}`
             const options ={
               email:req.body.email,
               url:url
