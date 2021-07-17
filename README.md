@@ -16,6 +16,7 @@ Backend of project of research methodology
 ## survey
 - `/api/v1/surveys/create` for creating survey (`POST`)
 - `/api/v1/surveys/all` for viewing viewing all surveys created (`GET`)
+- `/api/v1/surveys/:id/questions` for viewing viewing all questions of selected survey (`GET`)
 - `/api/v1/surveys/:id` for viewing only one survey (`GET`)
 - `/api/v1/surveys/update/:id` for update survey(`PUT`)
 - `/api/v1/surveys/delete/:id` for delete survey(`DELETE`)
