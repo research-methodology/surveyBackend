@@ -3,7 +3,7 @@ class surveyController{
     static async createSurvey(req,res){
         try {
             const data = req.body.categories;
-            let surveyId,url;
+            const surveyId ="",url="";
             const dt = {
               userId: req.id,
               surveyTitle: req.body.surveyTitle,
@@ -16,7 +16,7 @@ class surveyController{
                 console.log(res._id);
                 surveyId = res._id;
                  url = `https://cst-survey-frontend.herokuapp.com/respondent/${surveyId}`;
-
+                 console.log(url)
                 data.forEach((category) => {
                   res.categories.push({
                     categoryName: category.categoryName,
@@ -47,10 +47,10 @@ class surveyController{
                 console.log(err.message);
               });
       
-            console.log("Survey Created ");
+            //console.log("Survey Created ");
             res.status(201).json({
               status: 201,
-              message: "survey created sucessfull",
+              message: "survey created sucessfull !!!!!",
               surveyURL:url
             });
           } catch (error) {
@@ -93,7 +93,7 @@ class surveyController{
           });
         }
         const questions = {
-          SurveyTitle:survey.surveyTitle,
+          surveyTitle:survey.surveyTitle,
           categories: survey.categories
         }
         res.send({
