@@ -1,7 +1,9 @@
 import bcrypt, { hash } from "bcryptjs";
+import emailMocks from "../utilities/emailMocks";
 import { signinToken, decode } from "../utilities/jwt";
 import { sendEmail } from "../utilities/sendMail";
 import { User } from "./../database/schema/user";
+
 class UserControllers {
     static async signUp(req,res) {
         try{ 
@@ -16,7 +18,8 @@ class UserControllers {
             const url=`/verification/${emailVerificationToken}`
             const options ={
               email:req.body.email,
-              url:url
+              subject: "your are receiving this email because you signup on our system",
+              message: await emailMocks.signUp(url),
             }
            await sendEmail(options);
             newUser.password = undefined;
