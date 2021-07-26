@@ -1,9 +1,10 @@
 import {Survey} from './../database/schema/survey'
 class surveyController{
     static async createSurvey(req,res){
+        var url="";
         try {
             const data = req.body.categories;
-            let surveyId,url;
+            var surveyId="" ;
             const dt = {
               userId: req.id,
               surveyTitle: req.body.surveyTitle,
@@ -15,8 +16,8 @@ class surveyController{
               .then((res) => {
                 console.log(res._id);
                 surveyId = res._id;
-                 url = `https://cst-survey-frontend.herokuapp.com/respondent/${surveyId}`;
-
+                url = `https://cst-survey-frontend.herokuapp.com/respondent/${surveyId}`;
+                // console.log(url)
                 data.forEach((category) => {
                   res.categories.push({
                     categoryName: category.categoryName,
@@ -50,10 +51,10 @@ class surveyController{
             //console.log("Survey Created ");
             res.status(201).json({
               status: 201,
-              message: "survey created sucessfull",
+              message: "survey created sucessfull !!!!!",
               surveyURL:url
             });
-          } catch (error) {
+      } catch (error) {
             console.log(error);
             res.status(500).send({
               status: 500,
