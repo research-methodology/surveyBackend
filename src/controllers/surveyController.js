@@ -29,12 +29,9 @@ class surveyController{
                     });
       
                     question.answers.forEach((answer) => {
-                      let leng =
-                        res.categories[res.categories.length - 1].questions.length;
-                      res.categories[res.categories.length - 1].questions[
-                        leng - 1
-                      ].answers.push({
-                        answer: answer.answer,
+                      let leng = res.categories[res.categories.length - 1].questions.length;
+                      res.categories[res.categories.length - 1].questions[ leng - 1 ].answers.push({
+                        answer: answer,
                       });
                     });
                   });
@@ -92,8 +89,8 @@ class surveyController{
           });
         }
         const questions = {
-          Survey_title:survey.surveyTitle,
-          questions: survey.categories
+          SurveyTitle:survey.surveyTitle,
+          categories: survey.categories
         }
         res.send({
           message: `Questions of survey number ${req.params.id}`,

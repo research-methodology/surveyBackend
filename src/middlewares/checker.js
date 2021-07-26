@@ -30,7 +30,7 @@ class checkers{
             const {email}= req.body
             const user= await User.findOne({email})
             if(user){
-                return res.status(402).send({
+                return res.status(403).send({
                     message:"this email is already in use"
                 })
             }
