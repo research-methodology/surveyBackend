@@ -47,7 +47,7 @@ class surveyController{
                 console.log(err.message);
               });
       
-            console.log("Survey Created ");
+            //console.log("Survey Created ");
             res.status(201).json({
               status: 201,
               message: "survey created sucessfull",
@@ -93,7 +93,7 @@ class surveyController{
           });
         }
         const questions = {
-          SurveyTitle:survey.surveyTitle,
+          surveyTitle:survey.surveyTitle,
           categories: survey.categories
         }
         res.send({
