@@ -1,10 +1,10 @@
 import {Survey} from './../database/schema/survey'
 class surveyController{
     static async createSurvey(req,res){
-        var url="";
+       
         try {
             const data = req.body.categories;
-            var surveyId="" ;
+            var url="";
             const dt = {
               userId: req.id,
               surveyTitle: req.body.surveyTitle,
@@ -12,19 +12,18 @@ class surveyController{
               results: [],
             };
       
-            Survey.create(dt)
+           await Survey.create(dt)
               .then((res) => {
-                console.log(res._id);
-                surveyId = res._id;
-                url = `https://cst-survey-frontend.herokuapp.com/respondent/${surveyId}`;
-                // console.log(url)
+  
                 data.forEach((category) => {
                   res.categories.push({
                     categoryName: category.categoryName,
                     questions: [],
                   });
       
-                  console.log(res._id);
+                  const surveyId = res._id;
+                  url = `https://cst-survey-frontend.herokuapp.com/respondent/${surveyId}`;
+
                   category.questions.forEach((question) => {
                     res.categories[res.categories.length - 1].questions.push({
                       question: question.question,
@@ -41,17 +40,16 @@ class surveyController{
                   });
                 });
                 res.save().then(rs =>{
-                    console.log("save success");
+                    //console.log("save success");
                 })
               })
               .catch((err) => {
-                console.log(err.message);
+               // console.log(err.message);
               });
       
-            //console.log("Survey Created ");
             res.status(201).json({
               status: 201,
-              message: "survey created sucessfull !!!!!",
+              message: "survey created sucessfull",
               surveyURL:url
             });
       } catch (error) {
