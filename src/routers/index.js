@@ -15,5 +15,11 @@ router
     })
     .use('/api/v1/user',Routes)
     .use('/api/v1/surveys',route)
-    .use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    .use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+    .all('*', (req, res) => {
+        return res.status(404).json({
+            status:404,
+            message:"we don't have endpoint look like this in our system"
+        })
+    });
    export default router;
