@@ -31,6 +31,7 @@ class UserControllers {
            catch(err){
             console.log(err);
             res.status(404).json({
+                status:404,
                 message:"regitration fails"
             })
           }
@@ -44,7 +45,8 @@ class UserControllers {
             function(err, result) {
               if (err) {
                 console.log(err)
-                res.send({
+                res.status(403).json({
+                  status:403,
                   message:"Confirmesion went wrong"
                 });
               } else {
@@ -68,8 +70,9 @@ class UserControllers {
         const email =req.body.email;
         const password = req.body.password;
             const user=await User.findOne({email}).select('+password');  
-            if(!user || !bcrypt.compareSync(password, user.password)){
-                return res.status(400).send({
+            if(user == null || !bcrypt.compareSync(password, user.password)){
+                return res.status(400).json({
+                    status:400,
                     message:"Password OR username is invalid!"
                   });
                 };
@@ -78,7 +81,10 @@ class UserControllers {
                 { isLoggedIn: true },
                 function(err, result) {
                   if (err) {
-                    res.send(err);
+                    res.status(401).json({
+                      status:401,
+                      message:err.message
+                    });
                   } else {
                    //sending token
                     const token=signinToken({ id: result._id, email: result.email});
@@ -99,13 +105,17 @@ class UserControllers {
         //const id = req.id;
         await User.findById(req.id).then(result=>{
           res.status(201).json({
+            status:201,
             message: "user data received",
             data:result
           })
         })
       } catch (error) {
         console.log(error)
-        return res.status(500).json({message: 'Internal server error!'});
+        return res.status(500).json({
+          status:500,
+          message: 'Internal server error!'
+        });
       }
     }
     static async logout(req, res) {
@@ -116,10 +126,13 @@ class UserControllers {
                 { isLoggedIn: false },
                 function(err, result) {
                   if (err) {
-                    res.send(err);
+                    res.status(401).json({
+                      status:401,
+                      message:err.message
+                    });
                   } else {
                     res.status(201).json({
-                        status:'success',
+                        status:201,
                         message:'Logout successful',
                     })
                   }
@@ -128,7 +141,10 @@ class UserControllers {
             
         } catch (error) {
            // console.log(error)
-            return res.status(500).json({message: 'Internal server error!'});
+            return res.status(500).json({
+              status:500,
+              message: 'Internal server error!'
+            });
         }
     }
 }
