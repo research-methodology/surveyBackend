@@ -6,12 +6,11 @@ class surveyController{
         var surveyId="" ;
         await Survey.create(req.body)
           .then((response) => {
-            //console.log(response._id);
             surveyId = response._id;
             response.userId = req.id;
             response.save();
             url = `https://cst-survey-frontend.herokuapp.com/respondent/${surveyId}`;
-            res.status(201).json({
+            return res.status(201).json({
               status: 201,
               message: "survey created sucessfull !!!!!",
               surveyURL:url,
@@ -19,9 +18,8 @@ class surveyController{
             });
           })
           .catch((err) => {
-           // console.log(err.message);
-            console.log(error);
-            res.status(500).send({
+            //console.log(error);
+            return res.status(500).send({
               status: 500,
               errorMessage: err.message,
               message: "server Error",
@@ -32,20 +30,26 @@ class surveyController{
 static async getOneSurvey(req, res) {
   await Survey.findById(req.params.id)
     .then((survey) => {
-      if (!survey) {
+      if (survey == null) {
         return res.status(404).send({
+          status:404,
           message: `survey  with id  ${req.params.id} not found`,
         });
       }
-      res.send(survey);
+      return res.status(200).json({
+        status:200,
+        survey:survey
+      })
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
         return res.status(404).send({
-          message: `survey not found with id ${req.params.id}`,
+          status:404,
+          message: `survey not found with id ${req.params.id} !!`,
         });
       }
       return res.status(500).send({
+        status:500,
         message: "Error retrieving survey with id " + req.params.id,
       });
     });
@@ -64,7 +68,8 @@ static async getSurveyQuestions(req,res){
         surveyTitle:survey.surveyTitle,
         categories: survey.categories
       }
-      res.send({
+      return res.status(200).json({
+        status:200,
         message: `Questions of survey number ${req.params.id}`,
         questions:questions
       });
@@ -77,6 +82,7 @@ static async getSurveyQuestions(req,res){
         });
       }
       return res.status(500).send({
+        status:500,
         message: "Error retrieving survey with id " + req.params.id,
       });
     });
@@ -87,12 +93,12 @@ static async getAllSurvey(req, res) {
     const surveys = await Survey.find();
     if(surveys.length == 0){
       res.status(404).json({
-        message: " surveys are not available",
         status: 404,
+        message: " surveys are not available"
       });
     }
-      res.status(201).json({
-        status: 201,
+      res.status(200).json({
+        status: 200,
         message: "surveys are available",
         data: surveys,
       });
@@ -109,21 +115,27 @@ static async getAllSurvey(req, res) {
 static async getUserSurvey(req,res){
   await Survey.find({userId:req.id})
     .then((surveys) => {
-      if (!surveys) {
+      if (surveys.length == 0) {
         return res.status(404).send({
+          status:404,
           message: `User with id  ${req.id} has no surveys`,
         });
       }
-      res.send(surveys);
+      return res.status(200).json({
+        status:200,
+        surveys:surveys
+      })
     })
     .catch((err) => {
       if (err.kind === "ObjectId") {
         return res.status(404).send({
+          status:404,
           message: `User with id  ${req.id} has no surveys`,
         });
       }
       return res.status(500).send({
-        message: "Error retrieving surveys",
+        status:500,
+        message: "Server error happen when retrieving surveys",
       });
     });
 }
@@ -143,15 +155,15 @@ static async saveUnswers(req,res){
     // ]
     survey.results.push(newAnswers)
     survey.save();
-    res.status(201).json({
+    return res.status(201).json({
       status:201,
       message: "survey updated sucessfull",
       survey:survey
     })
     
   }).catch((error)=>{
-    console.log("Gerroor", error)
-    res.status(500).json({
+    //console.log("Gerroor", error)
+    return res.status(500).json({
       status:500,
       message:"server error"
     })
@@ -163,11 +175,16 @@ static async updateSurvey(req, res) {
     _id: req.params.id
       }, req.body , { upsert: true,returnNewDocument: true  }).then(
           (resp=>{
-            res.send(resp)
+            return res.status(200).json({
+              status:200,
+              message:"survey updated successfully",
+              survey:resp
+            })
           })
         ).catch((err) => {
           if (err.kind === "ObjectId") {
             return res.status(404).send({
+              status:404,
               message: `survey with id ${req.params.id} not found`,
             });
           }
@@ -184,22 +201,28 @@ static async deleteSurvey(req, res) {
     .then((survey) => {
       if (survey == null) {
         return res.status(404).send({
+          status:404,
           message: "survey not found with id " + req.params.id,
         });
       }
-      res.send({ message: "Article deleted successfully!" });
+      return res.status(200).json({
+        status:200,
+        message: "Article deleted successfully!"
+      })
     })
     .catch((err) => {
       if (err.kind === "ObjectId" || err.name === "NotFound") {
         return res.status(404).send({
+          status:404,
           message: "survey not found with id " + req.params.id,
         });
       }
       return res.status(500).send({
+        status:500,
         message: "Could not delete survey with id " + req.params.id,
       });
     });
-}
+  }
 
 }
 export default surveyController;
