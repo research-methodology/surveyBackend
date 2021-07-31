@@ -36,8 +36,8 @@ const feedback_schema = new Schema(
     },
     contactType: {
       desc: "Tel.",
-      type: Boolean,
-      default: false,
+      type: string,
+      default: "tel .",
       required: true,
     },
     message: {
