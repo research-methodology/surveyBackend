@@ -3,6 +3,7 @@ import emailMocks from "../utilities/emailMocks";
 import { signinToken, decode } from "../utilities/jwt";
 import { sendEmail } from "../utilities/sendMail";
 import { User } from "./../database/schema/user";
+import {Feedback} from "./../database/schema/feedback"
 
 class UserControllers {
     static async signUp(req,res) {
@@ -146,6 +147,33 @@ class UserControllers {
               message: 'Internal server error!'
             });
         }
+    }
+
+    static async saveFeedBack(req,res){
+      try {
+        
+        const {firstname,lastname,telnum,email,agree,contactType,message} = req.body;
+        const newFeedback =  await Feedback.create({
+          firstname,
+          lastname,
+          telnum,
+          email,
+          agree,
+          contactType,
+          message
+        })
+        return res.status(201).json({
+          status:201,
+          message: "feedback saved successfully",
+          result: newFeedback
+        })
+      } catch (error) {
+        //console.log("error---------",error)
+        return res.status(500).json({
+          status:500,
+          message:"error from server"
+        })
+      }
     }
 }
 export default UserControllers;

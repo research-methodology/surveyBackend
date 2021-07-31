@@ -13,6 +13,8 @@ Backend of project of research methodology
 - `/api/v1/user/login` for Login(`POST`)
 - `/api/v1/user/profile` for viewing profile(`GET`)
 - `/api/v1/user/logout`  for Logout (`POST`)
+- `/api/v1/user/feedback`  for saving feebacks (`POST`)
+
 ## survey
 - `/api/v1/surveys/create` for creating survey (`POST`)
 - `/api/v1/surveys/all` for viewing viewing all surveys created (`GET`)
