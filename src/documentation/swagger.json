@@ -257,6 +257,67 @@
             }
           }
         }
+      },
+      "/api/v1/user/feedback": {
+        "post": {
+          "tags": ["Users"],
+          "summary": "save feedback from user",
+          "description": "",
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "name": "user information",
+              "in": "body",
+              "description": "The user information",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstname": {
+                    "type": "string",
+                    "example": "Emmanuel"
+                  },
+                  "lastname": {
+                    "type": "string",
+                    "example": "NKUBITO"
+                  },
+                  "telnum":{
+                    "type":"number",
+                    "example":"07873116543"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "emmanuelnkubito2@gmail.com"
+                  },
+                  "agree": {
+                    "type": "Boolean",
+                    "example": "false"
+                  },
+                  "contactType": {
+                    "type": "Boolean",
+                    "example": "true"
+                  },
+                  "message":{
+                    "type":"string",
+                    "example":"happy to use this system to create my own survey"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "feedback created successfully"
+            },
+            "203": {
+              "description": "Bad Request"
+            },
+            "500": {
+              "description": "Server error"
+            }
+          }
+        },
+        "x-codegen-request-body-name": "body"
       }   
   
   
