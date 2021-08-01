@@ -294,7 +294,7 @@
                     "example": "false"
                   },
                   "contactType": {
-                    "type": "Boolean",
+                    "type": "string",
                     "example": "true"
                   },
                   "message":{
