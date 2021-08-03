@@ -20,6 +20,7 @@ class checkers{
         catch(err){
             res.status(401).json({
                 status:401,
+                errorMessage:err.message,
                 message:'invalid token,login to get one'
             })
         }             
@@ -31,22 +32,29 @@ class checkers{
             const user= await User.findOne({email})
             if(user){
                 return res.status(403).send({
+                    status:403,
                     message:"this email is already in use"
                 })
             }
             next();
             
         } catch (error) {
-            console.log(error)
+           // console.log(error)
+            return res.status(500).json({
+                status:500,
+                errorMessage: error.message,
+                message: "Internal Error!"
+            })
         }
     }
     static async isUserFound (req,res,next){
         try {
             const {email}= req.body
             const user= await User.findOne({email})
-            console.log(user)
+            //console.log(user)
             if(!user){
                 return res.status(402).send({
+                    status:402,
                     message:"we don't have this user in our system"
                 })
             }
@@ -54,8 +62,12 @@ class checkers{
            
             
         } catch (error) {
-            console.log(error)
-            return res.status(500).json({ message: "Internal Error!" });
+           // console.log(error)
+            return res.status(500).json({ 
+                status:500,
+                errorMessage: error.message,
+                message: "Internal Error!"
+             });
         }
     }
 
@@ -70,7 +82,11 @@ class checkers{
             }
             next();
         } catch (error) {
-            return res.status(500).json({ message: "Internal Error!" }); 
+            return res.status(500).json({ 
+                status:500,
+                errorMessage: error.message,
+                message: "Internal Error!" 
+            }); 
         }
     }
 
@@ -87,7 +103,11 @@ class checkers{
             .status(401)
             .json({ message: "You are using Incorrect or Expired Link!" });
         }
-        return res.status(500).json({ message: "Internal Error!" });
+        return res.status(500).json({ 
+            status:500,
+            errorMessage: err.message,
+            message: "Internal Error!"
+         });
         }
     }
 
@@ -103,9 +123,16 @@ class checkers{
         if (err.message === "jwt malformed"|| err.message === "jwt must be provided" || err.message === "invalid token" || err.message === "jwt expired") {
             return res
             .status(403)
-            .json({ error: "You are using Incorrect or Expired Link!" });
+            .json({ 
+                status:403,
+                error: "You are using Incorrect or Expired Link!"
+             });
         }
-        return res.status(500).json({ message: "Internal Error!" });
+        return res.status(500).json({
+            status:500,
+            errorMessage: err.message,
+            message: "Internal Error!"
+         });
         }
     }
        
