@@ -2,80 +2,76 @@ import {Survey} from './../database/schema/survey'
 class surveyController{
 
   static async createSurvey(req,res){
-        const data = req.body.categories
-        var url="";
-        var surveyId="" ;
-        const initialData = {
-          surveyTitle: req.body.surveyTitle,
-          results:[]
-        }
-        await Survey.create(initialData)
-          .then((response) => {
-            surveyId = response._id;
-            response.userId = req.id;
- 
-            data.forEach((category) => {
-             //insering categoryname 
-              response.categories.push({
-                categoryName: category.categoryName,
-                questions: [],
-              });
+    const data = req.body.categories
+    var url="";
+    var surveyId="" ;
+    const initialData = {
+      surveyTitle: req.body.surveyTitle,
+      results:[]
+    }
+    await Survey.create(initialData)
+      .then((response) => {
+        surveyId = response._id;
+        response.userId = req.id;
 
-              category.questions.forEach(async(question) => {
-              //each category from frontend
-              const respCatLength= response.categories.length;
-              let firstLength = respCatLength;
-                await response.categories[firstLength - 1].questions.push({
-                  question: question.question,
-                  wayOfAnswering: question.wayOfAnswering,
-                  answers: [],
-                });
-
-            /*
-             await question.answers.forEach((answer) => {
-                  //console.log(answer);
-                  let cateLeng = respCatLength;
-                  let leng =response.categories[cateLeng - 1].questions.length;
-                  response.categories[cateLeng].questions[ leng - 1 ].answers.push({
-                      answer:"answer.answe",
-                      id:12
-                    });
-                });  
-            */
-
-
-              });
-              
-
-            });
-  
-            response.save().then((resp)=>{
-              url = `https://cst-survey-frontend.herokuapp.com/respondent/${surveyId}`;
-              return res.status(201).json({
-                status: 201,
-                message: "survey created sucessfull !!!!!",
-                surveyURL:url,
-                response:resp
-              });
-            }).catch((error)=>{
-              res.status(403).json({
-                status:403,
-                message:'fail to save survey',
-                errorMessage:error.message
-              })
-            })
-            
-          })
-          .catch((err) => {
-            //console.log(error);
-            return res.status(500).send({
-              status: 500,
-              errorMessage: err.message,
-              message: "server Error",
-            });
+        data.forEach((category) => {
+         //insering categoryname 
+          response.categories.push({
+            categoryName: category.categoryName,
+            questions: [],
           });
-  }
+​
+          category.questions.forEach(async(question) => {
+          //each category from frontend
+          const respCatLength= response.categories.length;
+          let firstLength = respCatLength;
+             response.categories[firstLength - 1].questions.push({
+              question: question.question,
+              wayOfAnswering: question.wayOfAnswering,
+              answers: [],
+            });
+​
+        
+          question.answers.forEach((answer) => {
+              //console.log(answer);
+              let cateLeng = respCatLength;
+              let leng =response.categories[cateLeng - 1].questions.length;
+              response.categories[cateLeng-1].questions[ leng - 1 ].answers.push({
+                  answer:answer.answer
+                });
+            });  
+      ​
+          });   
+​
+        });
 
+        response.save().then((resp)=>{
+          url = `https://cst-survey-frontend.herokuapp.com/respondent/${surveyId}`;
+          return res.status(201).json({
+            status: 201,
+            message: "survey created sucessfull !!!!!",
+            surveyURL:url,
+            response:resp
+          });
+        }).catch((error)=>{
+          res.status(403).json({
+            status:403,
+            message:'fail to save survey',
+            errorMessage:error.message
+          })
+        })
+        
+      })
+      .catch((err) => {
+        //console.log(error);
+        return res.status(500).send({
+          status: 500,
+          errorMessage: err.message,
+          message: "server Error",
+        });
+      });
+}
+​
 static async getOneSurvey(req, res) {
   await Survey.findById(req.params.id)
     .then((survey) => {
