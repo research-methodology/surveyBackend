@@ -37,7 +37,7 @@ class surveyController{
                   let cateLeng = respCatLength;
                   let leng =response.categories[cateLeng - 1].questions.length;
                   response.categories[cateLeng-1].questions[ leng - 1 ].answers.push({
-                      answer:answer.answer
+                      answer:answer
                     });
                 });  
             
