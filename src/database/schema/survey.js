@@ -41,7 +41,9 @@ const category_schema = new Schema(
  
   const rs_schema = new Schema(
     {
+        category:{type:String},
         question:{type:String},
+        wayOfAnswering:{type:String},
         answer:[String]
     },{
       versionKey: false,
